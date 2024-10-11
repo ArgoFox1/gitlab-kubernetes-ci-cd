@@ -1,0 +1,37 @@
+stages:
+  - build
+  - deploy
+
+variables:
+  DOCKER_REGISTRY: "registry.gitlab.com"  
+  IMAGE_NAME: "metinemirhan6/test"  
+  IMAGE_TAG: "latest" 
+
+app-build:
+  stage: build
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [""]  
+  script:
+    - echo "Building Docker image using Kaniko"
+    - mkdir -p /kaniko/.docker
+    - echo "{\"auths\":{\"$DOCKER_REGISTRY\":{\"username\":\"$DOCKER_REGISTRY_USER\",\"password\":\"$DOCKER_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
+    - /kaniko/executor --context "${CI_PROJECT_DIR}" --dockerfile "${CI_PROJECT_DIR}/Dockerfile" --destination "$DOCKER_REGISTRY/$IMAGE_NAME:$IMAGE_TAG"  
+  tags: 
+    - k8s
+
+app-deploy: 
+  stage: deploy  
+  image: lachlanevenson/k8s-kubectl
+  script:   
+    - echo "Deploying to Kubernetes..."
+    - kubectl config use-context metinemirhan6/test:testconnect
+    - kubectl apply -f kubernetes/deployment_library.yaml
+    - kubectl apply -f kubernetes/library_service.yaml
+    - kubectl port-forward svc/library1 30391:80
+
+
+  tags:
+    - k8s
+  only:
+    - main
