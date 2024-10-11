@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: library1
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: library-management-system1
+  template:
+    metadata:
+      labels:
+        app: library-management-system1
+    spec:
+      containers:
+      - name: library1
+        image: emirhanmetin/library-management:latest
+        ports:
+        - containerPort: 5000

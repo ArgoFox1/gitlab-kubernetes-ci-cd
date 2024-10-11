@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Book</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Update Book</h1>
+        <form method="POST" action="{{ url_for('update_book', book_id=book_id) }}">
+            <label for="title">Title</label>
+            <input type="text" id="title" name="title" value="{{ book[0] }}" required>
+            <label for="author">Author</label>
+            <input type="text" id="author" name="author" value="{{ book[1] }}" required>
+            <button type="submit">Update Book</button>
+        </form>
+        <a href="{{ url_for('librarian_menu') }}">Back to Menu</a>
+    </div>
+</body>
+</html>

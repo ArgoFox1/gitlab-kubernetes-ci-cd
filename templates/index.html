@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Management System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Library Management System</h1>
+        <div class="menu">
+            <a href="{{ url_for('student_login') }}">Student Login</a>
+            <a href="{{ url_for('student_register') }}">Student Register</a>
+            <a href="{{ url_for('librarian_login') }}">Librarian Login</a>
+            <a href="{{ url_for('librarian_register') }}">Librarian Register</a>
+        </div>
+    </div>
+</body>
+</html>

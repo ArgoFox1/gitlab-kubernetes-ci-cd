@@ -1,0 +1,46 @@
+image:
+  registry: registry.gitlab.com
+  image: gitlab-org/gitlab-runner
+
+imagePullPolicy: IfNotPresent
+
+replicas: 1
+
+gitlabUrl: https://gitlab.com/
+
+runnerRegistrationToken: "Your Registration token"
+
+runners:
+  config: |
+    [[runners]]
+      [runners.kubernetes]
+        namespace = "{{.Release.Namespace}}"
+        image = "docker:latest"
+        privileged = true   
+        helper_cpu_limit = "500m"
+        helper_memory_limit = "3000Mi"
+concurrent: 2
+
+rbac:
+  create: true
+
+  clusterWideAccess: true
+
+  rules:
+    - resources: ["configmaps", "events", "pods", "pods/attach", "pods/exec", "secrets", "services"]
+      verbs: ["get", "list", "watch", "create", "patch", "update", "delete"]
+    - apiGroups: [""]
+      resources: ["pods/exec"]
+      verbs: ["create", "patch", "delete"]
+    - apiGroups: [""]
+      resources: ["pods/log"]
+      verbs: ["get"]
+    - apiGroups: ["apps"]
+      resources: ["deployments"]
+      verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+
+resources:
+  limits:
+    memory: 256Mi
+    cpu: 128m
+

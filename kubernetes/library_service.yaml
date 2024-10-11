@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: library1
+spec:
+  selector:
+    app: library-management-system1
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5000
+  type: NodePort
